@@ -1,0 +1,62 @@
+.poetry-base:
+  image: python:3.8
+  variables:
+    POETRY_VERSION: "1.1.13"
+  before_script:
+    - pip install poetry==$POETRY_VERSION
+    - poetry install
+
+
+stages:
+  - lint
+  - test
+
+black:
+  extends: .poetry-base
+  stage: lint
+  script:
+    - poetry run black --check .
+
+isort:
+  extends: .poetry-base
+  stage: lint
+  script:
+    - poetry run isort --check .
+
+pylint:
+  extends: .poetry-base
+  stage: lint
+  script:
+    - poetry run pylint */
+
+mypy:
+  extends: .poetry-base
+  stage: lint
+  script:
+    - poetry run mypy .
+  when: manual
+  allow_failure: true
+
+.pytest:
+  extends: .poetry-base
+  stage: test
+  script:
+    - poetry run pytest "tests/test_${CI_JOB_NAME}"
+
+attrdict.py:
+  extends: .pytest
+
+cache.py:
+  extends: .pytest
+
+mixin_dict_json.py:
+  extends: .pytest
+
+mixin_repr.py:
+  extends: .pytest
+
+ordering.py:
+  extends: .pytest
+
+timeit.py:
+  extends: .pytest

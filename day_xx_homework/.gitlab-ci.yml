@@ -1,0 +1,42 @@
+.poetry-base:
+  image: python:3.8
+  variables:
+    POETRY_VERSION: "1.1.13"
+  before_script:
+    - pip install poetry==$POETRY_VERSION
+    - poetry install
+
+
+stages:
+  - lint
+  - test
+
+black:
+  extends: .poetry-base
+  stage: lint
+  script:
+    - poetry run black --check .
+
+isort:
+  extends: .poetry-base
+  stage: lint
+  script:
+    - poetry run isort --check .
+
+pylint:
+  extends: .poetry-base
+  stage: lint
+  script:
+    - poetry run pylint */
+
+mypy:
+  extends: .poetry-base
+  stage: lint
+  script:
+    - poetry run mypy .
+
+pytest:
+  extends: .poetry-base
+  stage: test
+  script:
+    - poetry run pytest .

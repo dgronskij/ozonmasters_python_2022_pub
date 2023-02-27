@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "day_xx_homework"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+black = ">=22.3,<23"
+isort = "~5"
+mypy = "==0.942"
+pylint = "*"
+pytest = "*"
+
+[tool.isort]
+py_version = '38'
+line_length = 90
+
+[tool.black]
+target-version = ["py38"]
+line-length = 90
+
+[tool.pylint.MASTER]
+ignore-paths = ["tests"]
+
+[tool.pylint.FORMAT]
+max-line-length = 90
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
